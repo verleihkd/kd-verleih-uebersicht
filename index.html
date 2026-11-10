@@ -34,6 +34,7 @@ main{padding:0 var(--pad) 60px}
 .dev .bis{position:absolute;top:0;left:0;background:var(--sig);font-size:14px;font-weight:500;line-height:19px;padding:8px 12px}
 .dev.busy .img>*{opacity:.3}
 .empty{padding:40px 0;font-size:18px}
+.dev.sk .img{animation:pl 1.2s ease-in-out infinite alternate}@keyframes pl{to{opacity:.45}}
 @media (max-width:760px){:root{--pad:6px}.head{grid-template-columns:1fr}.hero{min-height:200px;padding:22px}.info{padding:22px}.info .times{margin-top:28px}.devs{grid-template-columns:1fr 1fr}.cat{padding-left:14px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -44,7 +45,7 @@ main{padding:0 var(--pad) 60px}
   <div class="info"><div class="tt">Verleihzeiten</div><div class="times" id="times">…</div><div class="free" id="free"></div></div>
 </div>
 <div class="bar" id="bar"></div>
-<main id="list"><div class="empty">Lädt …</div></main>
+<main id="list"><div class="cat">&nbsp;</div><div class="devs"><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div></div></main>
 <script>
 /* Eigener Webspace: hier die /exec-URL der Bereitstellung „Öffentlich (Übersicht)“ eintragen.
    In Apps Script selbst wird das ignoriert. Ohne Google-Anmeldung → keine Probleme mit mehreren Google-Konten. */
@@ -75,9 +76,11 @@ function draw(){
       return `<div class="dev ${b?"busy":""}"><div class="img">${d.img?`<img src="${esc(d.img)}" alt="" loading="lazy">`:IC}</div>${b?`<span class="bis">bis ${fmt(b)}</span>`:""}<div class="n">${esc(d.n)}</div></div>`}).join("")+`</div>`;})});
   list.innerHTML=html||`<div class="empty">Gerade ist hier nichts frei.</div>`;
 }
-google.script.run.withSuccessHandler(d=>{D=d;times.textContent=d.hours||"";
-  const n=d.devices.length,f=d.devices.filter(x=>!d.busy[x.id]).length;free.textContent=d.note??"Ausleihe persönlich in der Verleihzeit";draw()})
-  .withFailureHandler(e=>list.innerHTML=`<div class="empty">${esc(e.message)}</div>`).api("getPublicData",[],"");
+function show(d){D=d;times.textContent=d.hours||"";free.textContent=d.note??"Ausleihe persönlich in der Verleihzeit";draw()}
+// Sofort den zuletzt geladenen Stand zeigen, dann im Hintergrund aktualisieren
+let fresh=false;try{const c=JSON.parse(localStorage.getItem("kdv_pub")||"null");if(c&&c.devices)show(c)}catch(e){}
+google.script.run.withSuccessHandler(d=>{fresh=true;try{localStorage.setItem("kdv_pub",JSON.stringify(d))}catch(e){}show(d)})
+  .withFailureHandler(e=>{if(!D)list.innerHTML=`<div class="empty">${esc(e.message)}</div>`}).api("getPublicData",[],"");
 </script>
 </body>
 </html>
