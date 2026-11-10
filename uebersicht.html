@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KD Verleih</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@300..800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#111111;--wafer:#959595;--surf:#e1e1e1;--s2:#f0f0f0;--sig:#bc92fb;--hl:rgba(17,17,17,.12);--pad:25px;
+  --font:"Host Grotesk",-apple-system,BlinkMacSystemFont,system-ui,sans-serif}
+*{box-sizing:border-box;border-radius:0}
+html,body{margin:0;background:#fff;color:var(--ink);font:400 17px/1.35 var(--font);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer;text-align:left}
+:focus-visible{outline:3px solid var(--sig);outline-offset:-3px}
+.head{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(260px,1fr);gap:6px;padding:0 var(--pad)}
+.hero{background:var(--ink);color:#fff;padding:28px;min-height:260px;display:flex;flex-direction:column;justify-content:flex-end}
+.hero h1{font-size:clamp(64px,12.7vw,150px);font-weight:800;line-height:1;letter-spacing:-.02em;margin:0;white-space:nowrap}
+.info{background:var(--surf);padding:28px;display:flex;flex-direction:column}
+.info .tt{font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.3}
+.info .times{margin-top:auto;font-size:clamp(24px,2.6vw,30px);letter-spacing:-.02em;white-space:pre-line;line-height:1.45}
+.info .free{font-size:15px;line-height:20px}
+.bar{position:sticky;top:0;z-index:3;background:#fff;display:flex;gap:6px;flex-wrap:wrap;padding:20px var(--pad) 6px;border-bottom:1px solid var(--hl)}
+.chip{padding:14px 22px;font-size:17px;line-height:23px;background:var(--s2)}
+.chip.on{background:var(--ink);color:#fff}
+main{padding:0 var(--pad) 60px}
+.cat{font-size:15px;line-height:18px;padding:28px 0 10px 20px;border-bottom:1px solid var(--hl);margin-bottom:6px}
+.devs{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:6px}
+.dev{background:var(--s2);position:relative;display:flex;flex-direction:column;min-width:0}
+.dev .img{position:relative;overflow:hidden;aspect-ratio:1/1;background:var(--surf);display:grid;place-items:center}
+.dev .img img{position:absolute;top:10%;left:10%;width:80%;height:80%;object-fit:contain;mix-blend-mode:multiply}
+.dev .img svg{width:45%}
+.dev .n{padding:10px 16px;font-size:19px;font-weight:500;line-height:25px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dev .bis{position:absolute;top:0;left:0;background:var(--sig);font-size:14px;font-weight:500;line-height:19px;padding:8px 12px}
+.dev.busy .img>*{opacity:.3}
+.empty{padding:40px 0;font-size:18px}
+@media (max-width:760px){:root{--pad:6px}.head{grid-template-columns:1fr}.hero{min-height:200px;padding:22px}.info{padding:22px}.info .times{margin-top:28px}.devs{grid-template-columns:1fr 1fr}.cat{padding-left:14px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="head">
+  <div class="hero"><h1>KD Verleih</h1></div>
+  <div class="info"><div class="tt">Verleihzeiten</div><div class="times" id="times">…</div><div class="free" id="free"></div></div>
+</div>
+<div class="bar" id="bar"></div>
+<main id="list"><div class="empty">Lädt …</div></main>
+<script>
+/* Eigener Webspace: hier die /exec-URL der Bereitstellung „Öffentlich (Übersicht)“ eintragen.
+   In Apps Script selbst wird das ignoriert. Ohne Google-Anmeldung → keine Probleme mit mehreren Google-Konten. */
+const API_URL = "https://script.google.com/macros/s/AKfycbwbJ1udvpO3eSZ6_5g9jHNir0gvkfn8L5W2DPZglFxGy42zgaX75I3j8rvmkPGtZdvM/exec";
+if (typeof google === "undefined" || !google.script) {
+  window.google = { script: { run: { withSuccessHandler(ok) { return { withFailureHandler(fail) { return { api(fn, args) {
+    if (!API_URL) return fail(new Error("API_URL ist nicht eingetragen."));
+    fetch(API_URL, { method: "POST", credentials: "omit", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ fn: "api", args: [fn, args, ""] }) })
+      .then(r => r.json()).then(j => j.ok ? ok(j.result) : fail(new Error(j.error))).catch(() => fail(new Error("Keine Verbindung – bitte später nochmal versuchen.")));
+  } }; } }; } } } };
+}
+</script>
+<script>
+const IC=`<svg viewBox="0 0 100 70" fill="none" stroke="#111111" stroke-width="2.5"><rect x="6" y="16" width="88" height="48"/><path d="M32 16l6-10h24l6 10"/><circle cx="50" cy="40" r="15"/></svg>`;
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt=s=>s.split("-").reverse().slice(0,2).join(".");
+let D=null,cat="Alle",onlyFree=false;
+function draw(){
+  const cats=[...new Set(D.devices.map(d=>d.cat))];
+  bar.innerHTML=["Alle",...cats].map(c=>`<button class="chip ${c===cat?"on":""}" aria-pressed="${c===cat}" data-c="${esc(c)}">${esc(c)}</button>`).join("")+
+    `<button class="chip ${onlyFree?"on":""}" id="of" aria-pressed="${onlyFree}">Nur freie</button>`;
+  document.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{cat=b.dataset.c;draw();scrollTo(0,0)});
+  of.onclick=()=>{onlyFree=!onlyFree;draw()};
+  const show=cat==="Alle"?cats:[cat];let html="";
+  show.forEach(c=>{[...new Set(D.devices.filter(d=>d.cat===c).map(d=>d.grp||""))].forEach(g=>{
+    const ds=D.devices.filter(d=>d.cat===c&&(d.grp||"")===g&&(!onlyFree||!D.busy[d.id]));if(!ds.length)return;
+    html+=`<div class="cat">${esc(c)}${g?" · "+esc(g):""}</div><div class="devs">`+ds.map(d=>{const b=D.busy[d.id];
+      return `<div class="dev ${b?"busy":""}"><div class="img">${d.img?`<img src="${esc(d.img)}" alt="" loading="lazy">`:IC}</div>${b?`<span class="bis">bis ${fmt(b)}</span>`:""}<div class="n">${esc(d.n)}</div></div>`}).join("")+`</div>`;})});
+  list.innerHTML=html||`<div class="empty">Gerade ist hier nichts frei.</div>`;
+}
+google.script.run.withSuccessHandler(d=>{D=d;times.textContent=d.hours||"";
+  const n=d.devices.length,f=d.devices.filter(x=>!d.busy[x.id]).length;free.textContent=d.note??"Ausleihe persönlich in der Verleihzeit";draw()})
+  .withFailureHandler(e=>list.innerHTML=`<div class="empty">${esc(e.message)}</div>`).api("getPublicData",[],"");
+</script>
+</body>
+</html>
