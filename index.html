@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KD Verleih</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@300..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300..800&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#111111;--wafer:#959595;--surf:#e1e1e1;--s2:#f0f0f0;--sig:#bc92fb;--hl:rgba(17,17,17,.12);--pad:25px;
-  --font:"Host Grotesk",-apple-system,BlinkMacSystemFont,system-ui,sans-serif}
+  --font:"Hanken Grotesk",-apple-system,BlinkMacSystemFont,system-ui,sans-serif}
 *{box-sizing:border-box;border-radius:0}
 html,body{margin:0;background:#fff;color:var(--ink);font:400 17px/1.35 var(--font);-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer;text-align:left}
@@ -35,6 +35,7 @@ main{padding:0 var(--pad) 60px}
 .dev .bis{position:absolute;top:0;left:0;background:var(--sig);font-size:14px;font-weight:500;line-height:19px;padding:8px 12px}
 .dev.busy .img>*{opacity:.3}
 .empty{padding:40px 0;font-size:18px}
+.img .kz{position:absolute;left:0;bottom:0;background:#fff;color:#111;font-size:12px;font-weight:600;line-height:16px;padding:4px 8px;box-shadow:inset 0 0 0 1px rgba(17,17,17,.12)}
 .dev.sk .img{animation:pl 1.2s ease-in-out infinite alternate}@keyframes pl{to{opacity:.45}}
 @media (max-width:760px){
   :root{--pad:12px}
@@ -93,7 +94,7 @@ function draw(){
   show.forEach(c=>{[...new Set(D.devices.filter(d=>d.cat===c).map(d=>d.grp||""))].forEach(g=>{
     const ds=D.devices.filter(d=>d.cat===c&&(d.grp||"")===g&&(!onlyFree||!D.busy[d.id]));if(!ds.length)return;
     html+=`<div class="cat">${esc(c)}${g?" · "+esc(g):""}</div><div class="devs">`+ds.map(d=>{const b=D.busy[d.id];
-      return `<div class="dev ${b?"busy":""}"><div class="img">${d.img?`<img src="${esc(d.img)}" alt="" loading="lazy">`:IC}</div>${b?`<span class="bis">bis ${fmt(b)}</span>`:""}<div class="n">${esc(d.n)}</div></div>`}).join("")+`</div>`;})});
+      return `<div class="dev ${b?"busy":""}"><div class="img">${d.img?`<img src="${esc(d.img)}" alt="" loading="lazy">`:IC}${d.tag?`<span class="kz">${esc(d.tag)}</span>`:""}</div>${b?`<span class="bis">bis ${fmt(b)}</span>`:""}<div class="n">${esc(d.n)}</div></div>`}).join("")+`</div>`;})});
   list.innerHTML=html||`<div class="empty">Gerade ist hier nichts frei.</div>`;
 }
 function show(d){D=d;times.textContent=d.hours||"";free.textContent=(d.note!=null?d.note:"Ausleihe persönlich in der Verleihzeit");draw()}
