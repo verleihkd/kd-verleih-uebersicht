@@ -27,9 +27,10 @@ main{padding:0 var(--pad) 60px}
 .cat{font-size:15px;line-height:18px;padding:28px 0 10px 20px;border-bottom:1px solid var(--hl);margin-bottom:6px}
 .devs{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:6px}
 .dev{background:var(--s2);position:relative;display:flex;flex-direction:column;min-width:0}
-.dev .img{position:relative;overflow:hidden;aspect-ratio:1/1;background:var(--surf);display:grid;place-items:center}
+/* quadratische Bildfläche ohne aspect-ratio – funktioniert auch in älterem Safari */
+.dev .img{position:relative;overflow:hidden;height:0;padding-top:100%;background:var(--surf)}
 .dev .img img{position:absolute;top:10%;left:10%;width:80%;height:80%;object-fit:contain;mix-blend-mode:multiply}
-.dev .img svg{width:45%}
+.dev .img svg{position:absolute;top:50%;left:50%;width:45%;height:auto;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}
 .dev .n{padding:10px 16px;font-size:19px;font-weight:500;line-height:25px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .dev .bis{position:absolute;top:0;left:0;background:var(--sig);font-size:14px;font-weight:500;line-height:19px;padding:8px 12px}
 .dev.busy .img>*{opacity:.3}
@@ -79,7 +80,7 @@ if (typeof google === "undefined" || !google.script) {
 </script>
 <script>
 const IC=`<svg viewBox="0 0 100 70" fill="none" stroke="#111111" stroke-width="2.5"><rect x="6" y="16" width="88" height="48"/><path d="M32 16l6-10h24l6 10"/><circle cx="50" cy="40" r="15"/></svg>`;
-const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const fmt=s=>s.split("-").reverse().slice(0,2).join(".");
 let D=null,cat="Alle",onlyFree=false;
 function draw(){
@@ -95,7 +96,7 @@ function draw(){
       return `<div class="dev ${b?"busy":""}"><div class="img">${d.img?`<img src="${esc(d.img)}" alt="" loading="lazy">`:IC}</div>${b?`<span class="bis">bis ${fmt(b)}</span>`:""}<div class="n">${esc(d.n)}</div></div>`}).join("")+`</div>`;})});
   list.innerHTML=html||`<div class="empty">Gerade ist hier nichts frei.</div>`;
 }
-function show(d){D=d;times.textContent=d.hours||"";free.textContent=d.note??"Ausleihe persönlich in der Verleihzeit";draw()}
+function show(d){D=d;times.textContent=d.hours||"";free.textContent=(d.note!=null?d.note:"Ausleihe persönlich in der Verleihzeit");draw()}
 // Sofort den zuletzt geladenen Stand zeigen, dann im Hintergrund aktualisieren
 let fresh=false;try{const c=JSON.parse(localStorage.getItem("kdv_pub")||"null");if(c&&c.devices)show(c)}catch(e){}
 google.script.run.withSuccessHandler(d=>{fresh=true;try{localStorage.setItem("kdv_pub",JSON.stringify(d))}catch(e){}show(d)})
