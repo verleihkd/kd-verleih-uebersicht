@@ -13,13 +13,11 @@
 html,body{margin:0;background:#fff;color:var(--ink);font:400 17px/1.35 var(--font);-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer;text-align:left}
 :focus-visible{outline:3px solid var(--sig);outline-offset:-3px}
-.head{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(260px,1fr);gap:6px;padding:0 var(--pad)}
-.hero{background:var(--ink);color:#fff;padding:28px;min-height:260px;display:flex;flex-direction:column;justify-content:flex-end}
-.hero h1{font-size:clamp(64px,12.7vw,150px);font-weight:800;line-height:1;letter-spacing:-.02em;margin:0;white-space:nowrap}
-.info{background:var(--surf);padding:28px;display:flex;flex-direction:column}
-.info .tt{font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.3}
-.info .times{margin-top:auto;font-size:clamp(24px,2.6vw,30px);letter-spacing:-.02em;white-space:pre-line;line-height:1.45}
-.info .free{font-size:15px;line-height:20px}
+.top{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;column-gap:28px;padding:22px var(--pad) 16px;border-bottom:1px solid var(--hl)}
+.top h1{margin:0;font-size:40px;font-weight:800;letter-spacing:-.02em;line-height:1.1;white-space:nowrap}
+.vz{font-size:18px;line-height:24px}
+.vz .vl{font-weight:600}
+.vz small{display:block;font-size:14px;line-height:19px;color:#4c4b4e}
 .bar{position:sticky;top:0;z-index:3;background:#fff;display:flex;gap:6px;flex-wrap:wrap;padding:20px var(--pad) 6px;border-bottom:1px solid var(--hl)}
 .chip{padding:14px 22px;font-size:17px;line-height:23px;background:var(--s2)}
 .chip.on{background:var(--ink);color:#fff}
@@ -39,15 +37,53 @@ main{padding:0 var(--pad) 60px}
 .empty{padding:40px 0;font-size:18px}
 .img .kz{position:absolute;left:0;bottom:0;background:#fff;color:#111;font-size:12px;font-weight:600;line-height:16px;padding:4px 8px;box-shadow:inset 0 0 0 1px rgba(17,17,17,.12)}
 .dev.sk .img{animation:pl 1.2s ease-in-out infinite alternate}@keyframes pl{to{opacity:.45}}
+
+/* ---------- Reiter + Studioplan ---------- */
+.tabs{display:grid;grid-template-columns:auto auto;gap:6px}
+.tabs button{padding:13px 22px;text-align:center;font-size:18px;font-weight:500;background:var(--s2)}
+.tabs button.on{background:var(--ink);color:#fff}
+.tabs[hidden],[hidden]{display:none!important}
+#studio{padding:0 var(--pad) 60px}
+.wk{display:flex;align-items:center;gap:6px;padding:22px 0 10px}
+.wk .m{font-size:24px;font-weight:800;letter-spacing:-.01em;margin-right:auto}
+.wk button{height:52px;min-width:52px;padding:0 16px;background:var(--s2);font-size:17px;text-align:center}
+.wk button.on{background:var(--ink);color:#fff}
+.wk button:disabled{opacity:.35;cursor:default}
+.pg{display:grid;gap:1px;background:#d6d6d6}
+.pg>div{background:#fff;min-width:0;padding:10px 12px;font-size:15px;line-height:20px;min-height:46px}
+.pg .dh{background:var(--s2);font-size:14px}
+.pg .dh b{display:block;font-size:18px;font-weight:500}
+.pg .dh.td{background:var(--ink);color:#fff}
+.pg .sh{grid-column:1/-1;background:#fff;font-size:20px;font-weight:800;padding:18px 0 8px}
+.pg .tl{background:var(--s2);color:#4c4b4e}
+.pg .f{color:#4c4b4e}
+.pg .b{background:var(--sig);font-weight:500}
+.pg .k{background:#ffe599;font-weight:500}
+.pg .x{background:var(--s2);color:var(--wafer)}
+.pg .p{background:#fafafa;color:#c8c8c8}
+.days{display:flex;gap:4px;overflow-x:auto;padding:14px 0 10px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.days::-webkit-scrollbar{display:none}
+.days button{flex:none;width:52px;padding:7px 0;text-align:center;font-size:13px;line-height:16px;background:var(--s2)}
+.days button b{display:block;font-size:19px;font-weight:500;line-height:24px}
+.days button.on{background:var(--ink);color:#fff}
+.days button.zu{color:var(--wafer)}
+.leg{display:flex;flex-wrap:wrap;gap:16px;padding:12px 0 0;font-size:14px;color:#4c4b4e}
+.leg i{display:inline-block;width:13px;height:13px;margin-right:6px;vertical-align:-2px}
+.hint{margin-top:14px;font-size:17px;line-height:24px}
 @media (max-width:760px){
+  .top{grid-template-columns:auto minmax(0,1fr);column-gap:12px;row-gap:12px;padding:16px 12px 12px}
+  .top h1{font-size:28px}
+  .vz{text-align:right;font-size:14px;line-height:18px}
+  .vz .vl{display:none}
+  .vz small{font-size:11px;line-height:14px}
+  .tabs{grid-column:1/-1;grid-template-columns:1fr 1fr;gap:4px}
+  .tabs button{padding:11px 0;font-size:16px}
+  #studio{padding:8px 12px 40px}
+  .pg>div{padding:8px;font-size:13px;line-height:17px;min-height:38px}
+  .pg .dh{font-size:13px}
+  .leg{gap:10px;font-size:12px}
+  .hint{font-size:14px;line-height:20px}
   :root{--pad:12px}
-  .head{grid-template-columns:1fr;gap:0;padding:0}
-  .hero{min-height:0;padding:22px 16px 14px}
-  .hero h1{font-size:46px}
-  .info{padding:12px 16px 14px;display:grid;grid-template-columns:auto 1fr;column-gap:18px;align-items:start}
-  .info .tt{font-size:15px;line-height:20px}
-  .info .times{margin:0;font-size:16px;line-height:20px}
-  .info .free{grid-column:1/-1;font-size:13px;line-height:17px;margin-top:6px;opacity:.7}
   .bar{flex-wrap:nowrap;overflow-x:auto;padding:8px 12px;gap:6px;scrollbar-width:none;-webkit-overflow-scrolling:touch;
     -webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}
   .bar::-webkit-scrollbar{display:none}
@@ -63,16 +99,18 @@ main{padding:0 var(--pad) 60px}
 </style>
 </head>
 <body>
-<div class="head">
-  <div class="hero"><h1>KD Verleih</h1></div>
-  <div class="info"><div class="tt">Verleihzeiten</div><div class="times" id="times">…</div><div class="free" id="free"></div></div>
-</div>
+<header class="top">
+  <h1>KD Verleih</h1>
+  <div class="vz"><span class="vl">Verleihzeiten</span> <span id="times">…</span><small id="free"></small></div>
+  <div class="tabs" id="tabs" hidden><button data-t="studio">Studio</button><button data-t="equip">Equipment</button></div>
+</header>
+<section id="studio" hidden></section>
 <div class="bar" id="bar"></div>
 <main id="list"><div class="cat">&nbsp;</div><div class="devs"><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div></div></main>
 <script>
 /* Eigener Webspace: hier die /exec-URL der Bereitstellung „Öffentlich (Übersicht)“ eintragen.
    In Apps Script selbst wird das ignoriert. Ohne Google-Anmeldung → keine Probleme mit mehreren Google-Konten. */
-const API_URL = "https://script.google.com/macros/s/AKfycbzjpoytOAedl5pTenYp7PvSZVEg_NpGwmywvYdTI_t156pgNNr1Opc2UEgfUhr5SPRG1g/exec";
+const API_URL = "";
 if (typeof google === "undefined" || !google.script) {
   window.google = { script: { run: { withSuccessHandler(ok) { return { withFailureHandler(fail) { return { api(fn, args) {
     if (!API_URL) return fail(new Error("API_URL ist nicht eingetragen."));
@@ -99,7 +137,54 @@ function draw(){
       return `<div class="dev ${b?"busy":""}"><div class="img">${d.img?`<img src="${esc(d.img)}" alt="" loading="lazy">`:IC}${d.tag?`<span class="kz">${esc(d.tag)}</span>`:""}</div>${b?`<span class="bis">bis ${fmt(b)}</span>`:""}<div class="n">${esc(d.n)}</div></div>`}).join("")+`</div>`;})});
   list.innerHTML=html||`<div class="empty">Gerade ist hier nichts frei.</div>`;
 }
-function show(d){D=d;times.textContent=d.hours||"";free.textContent=(d.note!=null?d.note:"Ausleihe persönlich in der Verleihzeit");draw()}
+
+/* ---------- Studioplan (nur belegt/Kurs, keine Namen) ---------- */
+let tab=(()=>{try{return localStorage.getItem("kdv_tab")||"studio"}catch(e){return "studio"}})(),wk=0,selDay=null;
+const p2=n=>String(n).padStart(2,"0"),isoD=d=>d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate());
+const parseD=s=>{const a=s.split("-");return new Date(+a[0],+a[1]-1,+a[2],12)},addD=(s,n)=>{const d=parseD(s);d.setDate(d.getDate()+n);return isoD(d)};
+const hh=x=>Math.floor(x)+(x%1?":"+p2(Math.round(x%1*60)):"");
+const sTimes=t=>{const m=String(t).match(/(\d{1,2})(?::(\d\d))?\s*[–-]\s*(\d{1,2})(?::(\d\d))?/);return m?[+m[1]+(+(m[2]||0))/60,+m[3]+(+(m[4]||0))/60]:null};
+const shortSlot=t=>{const x=sTimes(t);return x?hh(x[0])+"–"+hh(x[1]):t};
+const mob=()=>window.matchMedia&&matchMedia("(max-width:760px)").matches;
+function hoursOf(S,s){if(parseD(s).getDay()===0||S.closed[s])return null;const h=(S.special[s]?S.hoursSpecial:S.hours)||{};return h[parseD(s).getDay()]||null}
+function state(S,s,sl){const T=isoD(new Date());if(s<T)return "p";const o=(S.occ[s]||{})[sl.key];if(o)return o;const h=hoursOf(S,s),t=sTimes(sl.slot);if(!h||(t&&(t[0]<h[0]||t[1]>h[1])))return "x";return "f"}
+const LBL={f:"frei",b:"belegt",k:"Kurs",x:"zu",p:""};
+function drawStudio(){
+  const S=D&&D.studio,el=studio;if(!S)return;
+  const T=isoD(new Date());
+  let h="";
+  if(mob()){
+    const days=[];for(let s=T;s<=S.to;s=addD(s,1))days.push(s);
+    if(!selDay||days.indexOf(selDay)<0)selDay=days.find(s=>hoursOf(S,s))||T;
+    h+=`<div class="days" style="padding-top:12px">${days.map(s=>{const d=parseD(s);return `<button data-day="${s}" class="${s===selDay?"on":""} ${hoursOf(S,s)?"":"zu"}">${d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".","")}<b>${d.getDate()}</b></button>`}).join("")}</div>`;
+    const d=parseD(selDay);
+    h+=`<div class="pg" style="grid-template-columns:72px repeat(${S.studios.length},minmax(0,1fr))"><div class="dh">${d.toLocaleDateString("de-DE",{weekday:"short",day:"numeric",month:"numeric"})}</div>${S.studios.map(st=>`<div class="dh"><b>${esc(st.replace(/studio$/i,""))}</b></div>`).join("")}`;
+    const rows=[...new Set(S.slots.map(x=>x.slot))];
+    rows.forEach(r=>{h+=`<div class="tl">${esc(shortSlot(r))}</div>`+S.studios.map(st=>{const sl=S.slots.find(x=>x.studio===st&&x.slot===r);if(!sl)return `<div class="x"></div>`;const c=state(S,selDay,sl);return `<div class="${c}">${LBL[c]}</div>`}).join("")});
+    h+=`</div>`;
+  }else{
+    const mon=addD(S.from,7*wk),days=[0,1,2,3,4,5].map(i=>addD(mon,i));
+    const kw=(()=>{const d=new Date(Date.UTC(+mon.slice(0,4),+mon.slice(5,7)-1,+mon.slice(8,10)+3)),y=new Date(Date.UTC(d.getUTCFullYear(),0,4));return 1+Math.round(((d-y)/864e5-3+((y.getUTCDay()+6)%7))/7)})();
+    const a=parseD(days[0]),z=parseD(days[5]);
+    h+=`<div class="wk"><span class="m">KW ${kw} · ${a.getDate()}.${a.getMonth()===z.getMonth()?"":(a.getMonth()+1)+"."}–${z.toLocaleDateString("de-DE",{day:"numeric",month:"long"})}</span>
+      <button id="wp" aria-label="Vorherige Woche" ${wk<=0?"disabled":""}>←</button><button id="wn0" class="${wk===0?"on":""}">Diese Woche</button><button id="wn" aria-label="Nächste Woche" ${wk>=3?"disabled":""}>→</button></div>`;
+    h+=`<div class="pg" style="grid-template-columns:130px repeat(6,minmax(0,1fr))"><div class="dh"></div>${days.map(s=>{const d=parseD(s);return `<div class="dh ${s===T?"td":""}"><b>${d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".","")} ${d.getDate()}.${d.getMonth()+1}.</b>${S.closed[s]?esc(S.closed[s]):S.special[s]?"Ferien":s===T?"heute":"&nbsp;"}</div>`}).join("")}`;
+    S.studios.forEach(st=>{h+=`<div class="sh">${esc(st)}</div>`;S.slots.filter(x=>x.studio===st).forEach(sl=>{h+=`<div class="tl">${esc(shortSlot(sl.slot))} Uhr</div>`+days.map(s=>{const c=state(S,s,sl);return `<div class="${c}">${LBL[c]}</div>`}).join("")})});
+    h+=`</div>`;
+  }
+  h+=`<div class="leg"><span><i style="background:#bc92fb"></i>gebucht</span><span><i style="background:#ffe599"></i>Kurs</span><span><i style="background:#f0f0f0"></i>geschlossen</span></div>${S.hint?`<div class="hint">${esc(S.hint)}</div>`:""}`;
+  el.innerHTML=h;
+  el.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{selDay=b.dataset.day;const x=el.querySelector(".days").scrollLeft;drawStudio();el.querySelector(".days").scrollLeft=x});
+  const wp=document.getElementById("wp");if(wp){wp.onclick=()=>{if(wk>0){wk--;drawStudio()}};wn.onclick=()=>{if(wk<3){wk++;drawStudio()}};wn0.onclick=()=>{wk=0;drawStudio()}}
+}
+function setTab(t){tab=t;try{localStorage.setItem("kdv_tab",t)}catch(e){}
+  const has=!!(D&&D.studio);tabs.hidden=!has;if(!has)tab="equip";
+  tabs.querySelectorAll("[data-t]").forEach(b=>{b.classList.toggle("on",b.dataset.t===tab);b.setAttribute("aria-pressed",b.dataset.t===tab)});
+  studio.hidden=tab!=="studio";bar.hidden=tab==="studio";list.hidden=tab==="studio";
+  if(tab==="studio")drawStudio()}
+tabs.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>setTab(b.dataset.t));
+let lastMob=null;window.addEventListener("resize",()=>{const m=mob();if(m!==lastMob){lastMob=m;if(tab==="studio")drawStudio()}});
+function show(d){D=d;times.textContent=String(d.hours||"").split(/\n+/).map(x=>x.trim()).filter(Boolean).join(" · ");free.textContent=(d.note!=null?d.note:"Ausleihe persönlich in der Verleihzeit");draw();lastMob=mob();setTab(tab)}
 // Sofort den zuletzt geladenen Stand zeigen, dann im Hintergrund aktualisieren
 let fresh=false;try{const c=JSON.parse(localStorage.getItem("kdv_pub")||"null");if(c&&c.devices)show(c)}catch(e){}
 google.script.run.withSuccessHandler(d=>{fresh=true;try{localStorage.setItem("kdv_pub",JSON.stringify(d))}catch(e){}show(d)})
