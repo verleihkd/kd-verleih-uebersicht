@@ -163,11 +163,12 @@ function drawStudio(){
     rows.forEach(r=>{h+=`<div class="tl">${esc(shortSlot(r))}</div>`+S.studios.map(st=>{const sl=S.slots.find(x=>x.studio===st&&x.slot===r);if(!sl)return `<div class="x"></div>`;const c=state(S,selDay,sl);return `<div class="${c}">${LBL[c]}</div>`}).join("")});
     h+=`</div>`;
   }else{
+    const maxWk=Math.max(0,Math.floor((parseD(S.to)-parseD(S.from))/864e5/7));if(wk>maxWk)wk=maxWk;
     const mon=addD(S.from,7*wk),days=[0,1,2,3,4,5].map(i=>addD(mon,i));
     const kw=(()=>{const d=new Date(Date.UTC(+mon.slice(0,4),+mon.slice(5,7)-1,+mon.slice(8,10)+3)),y=new Date(Date.UTC(d.getUTCFullYear(),0,4));return 1+Math.round(((d-y)/864e5-3+((y.getUTCDay()+6)%7))/7)})();
     const a=parseD(days[0]),z=parseD(days[5]);
     h+=`<div class="wk"><span class="m">KW ${kw} · ${a.getDate()}.${a.getMonth()===z.getMonth()?"":(a.getMonth()+1)+"."}–${z.toLocaleDateString("de-DE",{day:"numeric",month:"long"})}</span>
-      <button id="wp" aria-label="Vorherige Woche" ${wk<=0?"disabled":""}>←</button><button id="wn0" class="${wk===0?"on":""}">Diese Woche</button><button id="wn" aria-label="Nächste Woche" ${wk>=3?"disabled":""}>→</button></div>`;
+      <button id="wp" aria-label="Vorherige Woche" ${wk<=0?"disabled":""}>←</button><button id="wn0" class="${wk===0?"on":""}">Diese Woche</button><button id="wn" aria-label="Nächste Woche" ${wk>=maxWk?"disabled":""}>→</button></div>`;
     h+=`<div class="pg" style="grid-template-columns:130px repeat(6,minmax(0,1fr))"><div class="dh"></div>${days.map(s=>{const d=parseD(s);return `<div class="dh ${s===T?"td":""}"><b>${d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".","")} ${d.getDate()}.${d.getMonth()+1}.</b>${S.closed[s]?esc(S.closed[s]):S.special[s]?"Ferien":s===T?"heute":"&nbsp;"}</div>`}).join("")}`;
     S.studios.forEach(st=>{h+=`<div class="sh">${esc(st)}</div>`;S.slots.filter(x=>x.studio===st).forEach(sl=>{h+=`<div class="tl">${esc(shortSlot(sl.slot))} Uhr</div>`+days.map(s=>{const c=state(S,s,sl);return `<div class="${c}">${LBL[c]}</div>`}).join("")})});
     h+=`</div>`;
@@ -175,7 +176,7 @@ function drawStudio(){
   h+=`<div class="leg"><span><i style="background:#bc92fb"></i>gebucht</span><span><i style="background:#ffe599"></i>Kurs</span><span><i style="background:#f0f0f0"></i>geschlossen</span></div>${S.hint?`<div class="hint">${esc(S.hint)}</div>`:""}`;
   el.innerHTML=h;
   el.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{selDay=b.dataset.day;const x=el.querySelector(".days").scrollLeft;drawStudio();el.querySelector(".days").scrollLeft=x});
-  const wp=document.getElementById("wp");if(wp){wp.onclick=()=>{if(wk>0){wk--;drawStudio()}};wn.onclick=()=>{if(wk<3){wk++;drawStudio()}};wn0.onclick=()=>{wk=0;drawStudio()}}
+  const wp=document.getElementById("wp");if(wp){wp.onclick=()=>{if(wk>0){wk--;drawStudio()}};wn.onclick=()=>{wk++;drawStudio()};wn0.onclick=()=>{wk=0;drawStudio()}}
 }
 function setTab(t){tab=t;try{localStorage.setItem("kdv_tab",t)}catch(e){}
   const has=!!(D&&D.studio);tabs.hidden=!has;if(!has)tab="equip";
