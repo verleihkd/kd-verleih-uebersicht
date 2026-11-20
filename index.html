@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KD Verleih</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300..800&display=swap" rel="stylesheet">
 <style>
@@ -79,7 +81,7 @@ main{padding:0 var(--pad) 60px}
   .tabs{grid-column:1/-1;grid-template-columns:1fr 1fr;gap:4px}
   .tabs button{padding:11px 0;font-size:16px}
   #studio{padding:8px 12px 40px}
-  .pg>div{padding:8px;font-size:13px;line-height:17px;min-height:38px}
+  .pg>div,.pg>button{padding:8px;font-size:13px;line-height:17px;min-height:38px}
   .pg .dh{font-size:13px}
   .leg{gap:10px;font-size:12px}
   .hint{font-size:14px;line-height:20px}
@@ -95,6 +97,77 @@ main{padding:0 var(--pad) 60px}
   .dev .n{padding:6px 8px 0;margin-bottom:8px;font-size:13px;line-height:16px;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:38px;max-height:38px}
   .dev .bis{font-size:11px;line-height:14px;padding:4px 6px}
 }
+/* ---------- Geräte: Details, Zeitleiste, Wunschzettel ---------- */
+button.dev{width:100%;text-align:left;cursor:pointer}
+.dev .dt{padding:0 16px;margin:-6px 0 10px;font-size:13px;line-height:17px;color:#4c4b4e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dev .wl{position:absolute;top:0;right:0;width:40px;height:40px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px}
+.dev.on{box-shadow:inset 0 0 0 3px var(--ink)}
+.pg .a{background:repeating-linear-gradient(135deg,#efe4fe 0 8px,#fff 8px 16px);color:#4c4b4e}
+.pg>button{background:#fff;min-width:0;padding:10px 12px;font:inherit;font-size:15px;line-height:20px;min-height:46px;cursor:pointer;text-align:left;border:0;width:100%;color:#4c4b4e}
+.pg>button.a{background:repeating-linear-gradient(135deg,#efe4fe 0 8px,#fff 8px 16px)}
+.pg>button.sel{background:var(--ink);color:#fff;font-weight:500}
+.pg>button:active{background:var(--s2)}
+.pg .sel{background:var(--ink);color:#fff;font-weight:500}
+.ov{position:fixed;top:0;right:0;bottom:0;left:0;z-index:20;background:rgba(17,17,17,.55);display:flex;align-items:flex-start;justify-content:center;padding:40px 14px;overflow:auto;-webkit-overflow-scrolling:touch}
+.ov[hidden]{display:none!important}
+.md{background:#fff;width:100%;max-width:720px}
+.md .mt{display:flex;align-items:center;gap:14px;padding:16px 20px;border-bottom:1px solid var(--hl)}
+.md .mt h3{margin:0 auto 0 0;font-size:24px;font-weight:600;letter-spacing:-.01em}
+.md .mt button{background:var(--s2);padding:10px 16px;font-size:16px}
+.md .mb{padding:18px 20px 22px;display:flex;flex-direction:column;gap:14px;font-size:17px;line-height:24px}
+.md .pic{height:0;padding-top:56%;position:relative;background:var(--surf)}
+.md .pic img{position:absolute;top:8%;left:8%;width:84%;height:84%;object-fit:contain;mix-blend-mode:multiply}
+.md .pic svg{position:absolute;top:50%;left:50%;width:30%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}
+.md ul{margin:0;padding-left:20px}
+.md .occ{font-size:15px;line-height:22px;color:#4c4b4e}
+.md .occ b{color:var(--ink);font-weight:600}
+.md label{display:flex;flex-direction:column;gap:6px;font-size:14px;color:#4c4b4e}
+.md input,.md textarea{font:400 18px/1.35 var(--font);color:var(--ink);padding:12px 14px;border:0;background:var(--s2);border-radius:0;-webkit-appearance:none;appearance:none;width:100%}
+.md textarea{min-height:76px;resize:vertical}
+.md .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.md .li{display:flex;align-items:center;gap:10px;background:var(--s2);padding:10px 12px;font-size:16px}
+.md .li span{flex:1;min-width:0}
+.md .li button{font-size:20px;padding:0 6px;color:#4c4b4e}
+.md .err{color:#c0392b;font-size:15px;min-height:20px}
+.md .go{background:var(--ink);color:#fff;padding:16px 18px;font-size:18px;font-weight:500;text-align:center;width:100%}
+.md .go2{background:var(--s2);padding:14px 18px;font-size:17px;text-align:center;width:100%}
+.md small{font-size:13px;line-height:18px;color:#4c4b4e}
+.wbar{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--ink);color:#fff;display:flex;align-items:center;gap:14px;padding:12px var(--pad);padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+.wbar[hidden]{display:none!important}
+.wbar span{flex:1;min-width:0;font-size:16px;line-height:21px}
+.wbar button{background:#fff;color:var(--ink);padding:12px 16px;font-size:16px;font-weight:500;white-space:nowrap}
+body.haswl{padding-bottom:80px}
+.tlwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:10px}
+.tln{--n:28;--nw:210px;min-width:calc(var(--nw) + var(--n) * 28px)}
+.tlh,.tlr{display:grid;grid-template-columns:var(--nw) minmax(0,1fr)}
+.tlh{position:-webkit-sticky;position:sticky;top:0;z-index:2;background:#fff}
+.tlr .nm,.tlh .nm{position:-webkit-sticky;position:sticky;left:0;z-index:1;background:#fff;padding-right:10px;display:flex;flex-direction:column;justify-content:center;min-width:0;text-align:left}
+.tlr .nm b{font-weight:500;font-size:15px;line-height:19px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tlr .nm small{font-size:12px;line-height:15px;color:#4c4b4e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tlg{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));grid-template-rows:1fr}
+.tlg>.d{grid-row:1;border-left:1px solid rgba(17,17,17,.07)}
+.tlg>.d.we{background:#f6f6f6}.tlg>.d.td{background:rgba(188,146,251,.2)}
+.tlh .tlg>.d{font-size:12px;line-height:15px;text-align:center;padding:6px 0}
+.tlh .tlg>.d b{display:block;font-size:15px;font-weight:500}
+.tlh .tlg>.d.td{background:var(--ink);color:#fff}
+.tlr{min-height:44px;border-top:1px solid var(--hl)}
+.tlr.ct{min-height:0;border:0}.tlr.ct .nm{padding:18px 0 6px;font-size:15px;font-weight:600}
+.br{grid-row:1;align-self:center;height:24px;margin:0 1px;z-index:0}
+.br.v{background:var(--ink)}.br.r{background:var(--sig)}.br.i{background:repeating-linear-gradient(135deg,#d6d6d6 0 6px,#e8e8e8 6px 12px)}
+.tleg{display:flex;flex-wrap:wrap;gap:14px;padding:10px 0;font-size:13px;color:#4c4b4e}
+.tleg i{display:inline-block;width:13px;height:13px;margin-right:6px;vertical-align:-2px}
+.tlnav{display:flex;align-items:center;gap:6px;padding-top:14px}
+.tlnav .m{font-size:20px;font-weight:700;margin-right:auto}
+.tlnav button{height:46px;min-width:46px;padding:0 14px;background:var(--s2);font-size:16px;text-align:center}
+.tlnav button.on{background:var(--ink);color:#fff}
+@media (max-width:760px){
+  .tln{--nw:130px}
+  .md .two{grid-template-columns:1fr}
+  .pg>button{padding:8px;font-size:13px;line-height:17px;min-height:38px}
+  .ov{padding:0}
+  .md{min-height:100%}
+  .wbar span{font-size:14px}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -106,6 +179,8 @@ main{padding:0 var(--pad) 60px}
 </header>
 <section id="studio" hidden></section>
 <div class="bar" id="bar"></div>
+<div class="ov" id="ov" hidden><div class="md" id="md"></div></div>
+<div class="wbar" id="wbar" hidden><span id="wtx"></span><button id="wopen">Wunschzettel ansehen</button></div>
 <main id="list"><div class="cat">&nbsp;</div><div class="devs"><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div><div class="dev sk"><div class="img"></div><div class="n">&nbsp;</div></div></div></main>
 <script>
 /* Eigener Webspace: hier die /exec-URL der Bereitstellung „Öffentlich (Übersicht)“ eintragen.
@@ -123,19 +198,61 @@ if (typeof google === "undefined" || !google.script) {
 const IC=`<svg viewBox="0 0 100 70" fill="none" stroke="#111111" stroke-width="2.5"><rect x="6" y="16" width="88" height="48"/><path d="M32 16l6-10h24l6 10"/><circle cx="50" cy="40" r="15"/></svg>`;
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const fmt=s=>s.split("-").reverse().slice(0,2).join(".");
-let D=null,cat="Alle",onlyFree=false;
+let D=null,cat="Alle",onlyFree=false,eqView="tiles",tlStart=null;
+/* Wunschzettel: bleibt im Browser gespeichert, bis er abgeschickt ist */
+let WL=(()=>{try{const w=JSON.parse(localStorage.getItem("kdv_wish")||"null");if(w&&w.items)return w}catch(e){}return {items:[],sdate:"",skeys:[],from:"",to:"",name:"",note:""}})();
+const saveWL=()=>{try{localStorage.setItem("kdv_wish",JSON.stringify(WL))}catch(e){}wbarUpd()};
+const devById=id=>(D&&D.devices||[]).find(d=>d.id===id);
+const fmtL=s=>parseD(s).toLocaleDateString("de-DE",{weekday:"short",day:"numeric",month:"numeric"});
+function wbarUpd(){if(D)WL.items=WL.items.filter(devById);const n=WL.items.length,st=WL.skeys.length;wbar.hidden=!n&&!st;document.body.classList.toggle("haswl",!wbar.hidden);
+  wtx.innerHTML=[n?`${n} Gerät${n>1?"e":""}`:"",st?`Studio ${fmtL(WL.sdate)} · ${st} Zeit${st>1?"en":""}`:""].filter(Boolean).join(" · ")}
+function toggleItem(id){WL.items=WL.items.indexOf(id)>=0?WL.items.filter(x=>x!==id):WL.items.concat([id]);saveWL()}
+function occOf(id){const T=isoD(new Date());return ((D.occ||{})[id]||[]).filter(o=>o[1]>=T).sort((a,b)=>a[0].localeCompare(b[0]))}
+function openDev(id){const d=devById(id);if(!d)return;const T=isoD(new Date()),o=occOf(id),inL=WL.items.indexOf(id)>=0;
+  const occ=o.length?o.map(x=>`<div><b>${x[2]==="r"?"reserviert":x[2]==="i"?"intern belegt":"verliehen"}</b> ${x[0]<=T?"bis "+fmtL(x[1]):fmtL(x[0])+" – "+fmtL(x[1])}</div>`).join(""):"<div>Gerade nichts eingetragen – frei.</div>";
+  const tips=String(d.tip||"").split(/\n+/).map(x=>x.trim()).filter(Boolean);
+  md.innerHTML=`<div class="mt"><h3>${esc(d.n)}</h3><button data-x>Schließen</button></div>
+    <div class="pic">${d.img?`<img src="${esc(d.img)}" alt="">`:IC}</div>
+    <div class="mb">${d.det||d.tag?`<div>${[d.det,d.tag].filter(Boolean).map(esc).join(" · ")}</div>`:""}
+      ${tips.length?`<ul>${tips.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>`:""}
+      <div class="occ">${occ}</div>
+      <button class="${inL?"go2":"go"}" id="dwl">${inL?"Vom Wunschzettel nehmen":"Auf den Wunschzettel"}</button>
+      <small>Der Wunschzettel ist keine Reservierung. Komm damit in die Verleihzeit – dann schauen wir zusammen, ob alles passt.</small></div>`;
+  ov.hidden=false;md.querySelector("[data-x]").onclick=closeOv;dwl.onclick=()=>{toggleItem(id);closeOv();draw()}}
+function closeOv(){ov.hidden=true;md.innerHTML=""}
+ov.addEventListener("click",e=>{if(e.target===ov)closeOv()});
+function drawTimeline(){
+  const w=window.innerWidth,N=w<600?7:w<1000?14:28,T=isoD(new Date());
+  if(!tlStart){const d=parseD(T);tlStart=addD(T,-((d.getDay()+6)%7))}
+  const days=[];for(let i=0;i<N;i++)days.push(addD(tlStart,i));const first=days[0],last=days[N-1],idx=s=>Math.round((parseD(s)-parseD(first))/864e5);
+  const cats=[...new Set(D.devices.map(d=>d.cat))],show=cat==="Alle"?cats:[cat];
+  const dc=days.map((s,i)=>{const wd=parseD(s).getDay();return `<div class="d ${wd===0||wd===6?"we":""} ${s===T?"td":""}" style="grid-column:${i+1}"></div>`}).join("");
+  let rows="";show.forEach(c=>{const ds=D.devices.filter(d=>d.cat===c&&(!onlyFree||!D.busy[d.id]));if(!ds.length)return;rows+=`<div class="tlr ct"><div class="nm">${esc(c)}</div><div></div></div>`;
+    ds.forEach(d=>{const br=((D.occ||{})[d.id]||[]).filter(o=>o[1]>=first&&o[0]<=last).map(o=>`<div class="br ${o[2]}" style="grid-column:${Math.max(0,idx(o[0]))+1}/${Math.min(N-1,idx(o[1]))+2}"></div>`).join("");
+      rows+=`<div class="tlr"><button class="nm" data-dv="${d.id}"><b>${esc(d.n)}</b><small>${esc(d.det||d.grp||"")}</small></button><div class="tlg">${dc}${br}</div></div>`})});
+  const a=parseD(first),z=parseD(last);
+  list.innerHTML=`<div class="tlnav"><span class="m">${a.getDate()}.${a.getMonth()+1}. – ${z.toLocaleDateString("de-DE",{day:"numeric",month:"long"})}</span><button id="tp" aria-label="Zurück">←</button><button id="t0" class="${first<=T&&T<=last?"on":""}">Heute</button><button id="tn" aria-label="Weiter">→</button></div>
+    <div class="tlwrap" id="tw"><div class="tln" style="--n:${N}"><div class="tlh"><div class="nm"></div><div class="tlg">${days.map((s,i)=>{const d=parseD(s),wd=d.getDay();return `<div class="d ${wd===0||wd===6?"we":""} ${s===T?"td":""}" style="grid-column:${i+1}">${["So","Mo","Di","Mi","Do","Fr","Sa"][wd]}<b>${d.getDate()}</b></div>`}).join("")}</div></div>${rows}</div></div>
+    <div class="tleg"><span><i style="background:#111"></i>verliehen</span><span><i style="background:#bc92fb"></i>reserviert</span><span><i style="background:repeating-linear-gradient(135deg,#d6d6d6 0 4px,#e8e8e8 4px 8px)"></i>intern belegt</span><span>Gerät antippen = Details · wischen = Woche</span></div>`;
+  const mv=n=>{tlStart=addD(tlStart,7*n);drawTimeline()};
+  tp.onclick=()=>mv(-1);tn.onclick=()=>mv(1);t0.onclick=()=>{tlStart=null;drawTimeline()};swipe(document.getElementById("tw"),mv);
+  list.querySelectorAll("[data-dv]").forEach(b=>b.onclick=()=>openDev(b.dataset.dv));
+}
 function draw(){
   const cats=[...new Set(D.devices.map(d=>d.cat))];
   bar.innerHTML=["Alle",...cats].map(c=>`<button class="chip ${c===cat?"on":""}" aria-pressed="${c===cat}" data-c="${esc(c)}">${esc(c)}</button>`).join("")+
-    `<button class="chip tg ${onlyFree?"on":""}" id="of" aria-pressed="${onlyFree}">Nur freie</button>`;
+    `<button class="chip tg ${onlyFree?"on":""}" id="of" aria-pressed="${onlyFree}">Nur freie</button><button class="chip tg ${eqView==="time"?"on":""}" id="tv" aria-pressed="${eqView==="time"}">Zeitleiste</button>`;
   document.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{cat=b.dataset.c;draw();scrollTo(0,0)});
-  of.onclick=()=>{onlyFree=!onlyFree;draw()};
+  of.onclick=()=>{onlyFree=!onlyFree;draw()};tv.onclick=()=>{eqView=eqView==="time"?"tiles":"time";draw()};
+  wbarUpd();if(eqView==="time")return drawTimeline();
   const show=cat==="Alle"?cats:[cat];let html="";
   show.forEach(c=>{[...new Set(D.devices.filter(d=>d.cat===c).map(d=>d.grp||""))].forEach(g=>{
     const ds=D.devices.filter(d=>d.cat===c&&(d.grp||"")===g&&(!onlyFree||!D.busy[d.id]));if(!ds.length)return;
     html+=`<div class="cat">${esc(c)}${g?" · "+esc(g):""}</div><div class="devs">`+ds.map(d=>{const b=D.busy[d.id];
-      return `<div class="dev ${b?"busy":""}"><div class="img">${d.img?`<img src="${esc(d.img)}" alt="" loading="lazy">`:IC}${d.tag?`<span class="kz">${esc(d.tag)}</span>`:""}</div>${b?`<span class="bis">bis ${fmt(b)}</span>`:""}<div class="n">${esc(d.n)}</div></div>`}).join("")+`</div>`;})});
+      const inL=WL.items.indexOf(d.id)>=0;
+      return `<button class="dev ${b?"busy":""} ${inL?"on":""}" data-dv="${d.id}"><div class="img">${d.img?`<img src="${esc(d.img)}" alt="" loading="lazy">`:IC}${d.tag?`<span class="kz">${esc(d.tag)}</span>`:""}</div>${b?`<span class="bis">bis ${fmt(b)}</span>`:""}${inL?`<span class="wl" aria-label="auf dem Wunschzettel">✓</span>`:""}<div class="n">${esc(d.n)}</div>${d.det?`<div class="dt">${esc(d.det)}</div>`:""}</button>`}).join("")+`</div>`;})});
   list.innerHTML=html||`<div class="empty">Gerade ist hier nichts frei.</div>`;
+  list.querySelectorAll("[data-dv]").forEach(b=>b.onclick=()=>openDev(b.dataset.dv));
 }
 
 /* ---------- Studioplan (nur belegt/Kurs, keine Namen) ---------- */
@@ -148,7 +265,10 @@ const shortSlot=t=>{const x=sTimes(t);return x?hh(x[0])+"–"+hh(x[1]):t};
 const mob=()=>window.matchMedia&&matchMedia("(max-width:760px)").matches;
 function hoursOf(S,s){if(parseD(s).getDay()===0||S.closed[s])return null;const h=(S.special[s]?S.hoursSpecial:S.hours)||{};return h[parseD(s).getDay()]||null}
 function state(S,s,sl){const T=isoD(new Date());if(s<T)return "p";const o=(S.occ[s]||{})[sl.key];if(o)return o;const h=hoursOf(S,s),t=sTimes(sl.slot);if(!h||(t&&(t[0]<h[0]||t[1]>h[1])))return "x";return "f"}
-const LBL={f:"frei",b:"belegt",k:"Kurs",x:"zu",p:""};
+const LBL={f:"frei",b:"belegt",k:"Kurs",x:"zu",p:"",a:"angefragt"};
+const picked=(s,k)=>WL.sdate===s&&WL.skeys.indexOf(k)>=0;
+function cellHtml(S,s,sl){const c=state(S,s,sl);if(c==="f"||c==="a"){const on=picked(s,sl.key);return `<button class="${on?"sel":c}" data-pick="${s}|${esc(sl.key)}">${on?"✓ gewählt":LBL[c]}</button>`}return `<div class="${c}">${LBL[c]}</div>`}
+function pick(s,k){if(WL.sdate&&WL.sdate!==s&&WL.skeys.length){WL.skeys=[]}WL.sdate=s;WL.skeys=WL.skeys.indexOf(k)>=0?WL.skeys.filter(x=>x!==k):WL.skeys.concat([k]);if(!WL.skeys.length)WL.sdate="";saveWL();drawStudio()}
 function drawStudio(){
   const S=D&&D.studio,el=studio;if(!S)return;
   const T=isoD(new Date());
@@ -160,7 +280,7 @@ function drawStudio(){
     const d=parseD(selDay);
     h+=`<div class="pg" style="grid-template-columns:72px repeat(${S.studios.length},minmax(0,1fr))"><div class="dh">${d.toLocaleDateString("de-DE",{weekday:"short",day:"numeric",month:"numeric"})}</div>${S.studios.map(st=>`<div class="dh"><b>${esc(st.replace(/studio$/i,""))}</b></div>`).join("")}`;
     const rows=[...new Set(S.slots.map(x=>x.slot))];
-    rows.forEach(r=>{h+=`<div class="tl">${esc(shortSlot(r))}</div>`+S.studios.map(st=>{const sl=S.slots.find(x=>x.studio===st&&x.slot===r);if(!sl)return `<div class="x"></div>`;const c=state(S,selDay,sl);return `<div class="${c}">${LBL[c]}</div>`}).join("")});
+    rows.forEach(r=>{h+=`<div class="tl">${esc(shortSlot(r))}</div>`+S.studios.map(st=>{const sl=S.slots.find(x=>x.studio===st&&x.slot===r);if(!sl)return `<div class="x"></div>`;return cellHtml(S,selDay,sl)}).join("")});
     h+=`</div>`;
   }else{
     const maxWk=Math.max(0,Math.floor((parseD(S.to)-parseD(S.from))/864e5/7));if(wk>maxWk)wk=maxWk;
@@ -170,21 +290,60 @@ function drawStudio(){
     h+=`<div class="wk"><span class="m">KW ${kw} · ${a.getDate()}.${a.getMonth()===z.getMonth()?"":(a.getMonth()+1)+"."}–${z.toLocaleDateString("de-DE",{day:"numeric",month:"long"})}</span>
       <button id="wp" aria-label="Vorherige Woche" ${wk<=0?"disabled":""}>←</button><button id="wn0" class="${wk===0?"on":""}">Diese Woche</button><button id="wn" aria-label="Nächste Woche" ${wk>=maxWk?"disabled":""}>→</button></div>`;
     h+=`<div class="pg" style="grid-template-columns:130px repeat(6,minmax(0,1fr))"><div class="dh"></div>${days.map(s=>{const d=parseD(s);return `<div class="dh ${s===T?"td":""}"><b>${d.toLocaleDateString("de-DE",{weekday:"short"}).replace(".","")} ${d.getDate()}.${d.getMonth()+1}.</b>${S.closed[s]?esc(S.closed[s]):S.special[s]?"Ferien":s===T?"heute":"&nbsp;"}</div>`}).join("")}`;
-    S.studios.forEach(st=>{h+=`<div class="sh">${esc(st)}</div>`;S.slots.filter(x=>x.studio===st).forEach(sl=>{h+=`<div class="tl">${esc(shortSlot(sl.slot))} Uhr</div>`+days.map(s=>{const c=state(S,s,sl);return `<div class="${c}">${LBL[c]}</div>`}).join("")})});
+    S.studios.forEach(st=>{h+=`<div class="sh">${esc(st)}</div>`;S.slots.filter(x=>x.studio===st).forEach(sl=>{h+=`<div class="tl">${esc(shortSlot(sl.slot))} Uhr</div>`+days.map(s=>cellHtml(S,s,sl)).join("")})});
     h+=`</div>`;
   }
-  h+=`<div class="leg"><span><i style="background:#bc92fb"></i>gebucht</span><span><i style="background:#ffe599"></i>Kurs</span><span><i style="background:#f0f0f0"></i>geschlossen</span></div>${S.hint?`<div class="hint">${esc(S.hint)}</div>`:""}`;
+  h+=`<div class="leg"><span><i style="background:#bc92fb"></i>gebucht</span><span><i style="background:#ffe599"></i>Kurs</span><span><i style="background:repeating-linear-gradient(135deg,#efe4fe 0 4px,#fff 4px 8px);box-shadow:inset 0 0 0 1px #ddd"></i>angefragt</span><span><i style="background:#f0f0f0"></i>geschlossen</span><span>Freie Zeit antippen = auf den Wunschzettel</span></div>${S.hint?`<div class="hint">${esc(S.hint)}</div>`:""}`;
   el.innerHTML=h;
   el.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{selDay=b.dataset.day;const x=el.querySelector(".days").scrollLeft;drawStudio();el.querySelector(".days").scrollLeft=x});
-  const wp=document.getElementById("wp");if(wp){wp.onclick=()=>{if(wk>0){wk--;drawStudio()}};wn.onclick=()=>{wk++;drawStudio()};wn0.onclick=()=>{wk=0;drawStudio()}}
+  const wp=document.getElementById("wp");if(wp){wp.onclick=()=>{if(wk>0){wk--;drawStudio()}};wn.onclick=()=>{if(!wn.disabled){wk++;drawStudio()}};wn0.onclick=()=>{wk=0;drawStudio()}}
+  el.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>{const v=b.dataset.pick.split(/\|(.+)/);pick(v[0],v[1])});
+  swipe(el.querySelector(".pg"),n=>{if(wp){if(n>0)wn.click();else wp.click()}else{const ds=[...el.querySelectorAll("[data-day]")].map(b=>b.dataset.day),i=ds.indexOf(selDay)+n;if(i>=0&&i<ds.length){selDay=ds[i];drawStudio();const on=el.querySelector(".days .on");if(on)on.scrollIntoView({inline:"center",block:"nearest"})}}});
 }
+/* Wischen links/rechts */
+function swipe(el,fn){if(!el)return;let x0=null,y0=null;const end=(x,y)=>{if(x0===null)return;const dx=x-x0,dy=y-y0;x0=null;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.4)fn(dx<0?1:-1)};
+  el.addEventListener("touchstart",e=>{const t=e.touches[0];x0=t.clientX;y0=t.clientY},{passive:true});
+  el.addEventListener("touchend",e=>{const t=e.changedTouches[0];end(t.clientX,t.clientY)},{passive:true});
+  el.addEventListener("mousedown",e=>{x0=e.clientX;y0=e.clientY});el.addEventListener("mouseup",e=>end(e.clientX,e.clientY))}
+/* ---------- Wunschzettel abschicken ---------- */
+function openWish(done){
+  const S=D&&D.studio,T=isoD(new Date());
+  if(done){md.innerHTML=`<div class="mt"><h3>Abgeschickt</h3><button data-x>Schließen</button></div><div class="mb"><div>${esc(D.wishHint||"Dein Wunsch ist angekommen. Komm damit in die Verleihzeit.")}</div><div><b>Verleihzeiten:</b> ${esc(times.textContent)}</div><button class="go" data-x>Alles klar</button></div>`;
+    ov.hidden=false;md.querySelectorAll("[data-x]").forEach(b=>b.onclick=closeOv);return}
+  const items=WL.items.map(devById).filter(Boolean),slotName=k=>{const sl=S&&S.slots.find(x=>x.key===k);return sl?sl.studio+" · "+shortSlot(sl.slot)+" Uhr":k};
+  md.innerHTML=`<div class="mt"><h3>Wunschzettel</h3><button data-x>Schließen</button></div><div class="mb">
+    ${items.length?`<div><b>Equipment</b></div>${items.map(d=>`<div class="li"><span>${esc(d.n)}</span><button data-rm="${d.id}" aria-label="entfernen">×</button></div>`).join("")}
+      <div class="two"><label>Abholen am<input type="date" id="wf" min="${T}" value="${esc(WL.from)}"></label><label>Zurück am<input type="date" id="wt" min="${T}" value="${esc(WL.to)}"></label></div>`:`<small>Noch kein Equipment – unter „Equipment“ ein Gerät antippen und „Auf den Wunschzettel“.</small>`}
+    ${WL.skeys.length?`<div><b>Studio · ${fmtL(WL.sdate)}</b></div>${WL.skeys.map(k=>`<div class="li"><span>${esc(slotName(k))}</span><button data-rk="${esc(k)}" aria-label="entfernen">×</button></div>`).join("")}`:`<small>Kein Studio gewählt – unter „Studio“ freie Zeiten antippen.</small>`}
+    <label>Vor- und Nachname<input id="wn2" autocomplete="name" value="${esc(WL.name)}" placeholder="z. B. Lena Weber"></label>
+    <label>Wofür? (optional)<textarea id="wno" maxlength="300" placeholder="z. B. Kurzfilm für Projekt XY, Porträts draußen …">${esc(WL.note)}</textarea></label>
+    <div class="err" id="werr"></div>
+    <button class="go" id="wsend">Wunsch abschicken</button>
+    <small>Das ist noch keine Reservierung. Wir sehen deinen Wunsch beim Verleih; abgeholt und unterschrieben wird persönlich in der Verleihzeit (${esc(times.textContent)}). Dein Name wird nur intern beim Verleih gespeichert.</small></div>`;
+  ov.hidden=false;md.querySelector("[data-x]").onclick=closeOv;
+  const keep=()=>{const f=document.getElementById("wf"),t=document.getElementById("wt");if(f)WL.from=f.value;if(t)WL.to=t.value;WL.name=wn2.value;WL.note=wno.value;saveWL()};
+  md.querySelectorAll("input,textarea").forEach(x=>x.oninput=keep);
+  md.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{keep();toggleItem(b.dataset.rm);if(tab!=="studio")draw();if(!WL.items.length&&!WL.skeys.length)closeOv();else openWish()});
+  md.querySelectorAll("[data-rk]").forEach(b=>b.onclick=()=>{keep();WL.skeys=WL.skeys.filter(k=>k!==b.dataset.rk);if(!WL.skeys.length)WL.sdate="";saveWL();if(tab==="studio")drawStudio();if(!WL.items.length&&!WL.skeys.length)closeOv();else openWish()});
+  wsend.onclick=()=>{keep();const err=m=>{werr.textContent=m};
+    if(WL.name.trim().split(/\s+/).length<2)return err("Bitte Vor- und Nachnamen eintragen.");
+    if(items.length&&(!WL.from||!WL.to))return err("Bitte angeben, wann du das Equipment abholen und zurückbringen willst.");
+    if(items.length&&WL.to<WL.from)return err("Das Rückgabedatum liegt vor der Abholung.");
+    if(items.length&&WL.from<T)return err("Die Abholung liegt in der Vergangenheit.");
+    wsend.disabled=true;wsend.textContent="Wird gesendet …";err("");
+    google.script.run.withSuccessHandler(()=>{WL={items:[],sdate:"",skeys:[],from:"",to:"",name:WL.name,note:""};saveWL();if(tab==="studio")drawStudio();else draw();openWish(true)})
+      .withFailureHandler(e=>{wsend.disabled=false;wsend.textContent="Wunsch abschicken";err(e.message)})
+      .api("submitWish",[{name:WL.name,items:items.map(d=>d.id),from:WL.from,to:WL.to,sdate:WL.sdate,skeys:WL.skeys,note:WL.note}],"")};
+}
+wopen.onclick=()=>openWish();
 function setTab(t){tab=t;try{localStorage.setItem("kdv_tab",t)}catch(e){}
   const has=!!(D&&D.studio);tabs.hidden=!has;if(!has)tab="equip";
   tabs.querySelectorAll("[data-t]").forEach(b=>{b.classList.toggle("on",b.dataset.t===tab);b.setAttribute("aria-pressed",b.dataset.t===tab)});
   studio.hidden=tab!=="studio";bar.hidden=tab==="studio";list.hidden=tab==="studio";
-  if(tab==="studio")drawStudio()}
+  if(tab==="studio")drawStudio();wbarUpd()}
 tabs.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>setTab(b.dataset.t));
-let lastMob=null;window.addEventListener("resize",()=>{const m=mob();if(m!==lastMob){lastMob=m;if(tab==="studio")drawStudio()}});
+let lastMob=null,lastW=window.innerWidth;window.addEventListener("resize",()=>{const m=mob();if(m!==lastMob){lastMob=m;if(tab==="studio")drawStudio()}
+  const w=window.innerWidth,b=x=>x<600?0:x<1000?1:2;if(b(w)!==b(lastW)&&tab!=="studio"&&eqView==="time")drawTimeline();lastW=w});
 function show(d){D=d;times.textContent=String(d.hours||"").split(/\n+/).map(x=>x.trim()).filter(Boolean).join(" · ");free.textContent=(d.note!=null?d.note:"Ausleihe persönlich in der Verleihzeit");draw();lastMob=mob();setTab(tab)}
 // Sofort den zuletzt geladenen Stand zeigen, dann im Hintergrund aktualisieren
 let fresh=false;try{const c=JSON.parse(localStorage.getItem("kdv_pub")||"null");if(c&&c.devices)show(c)}catch(e){}
