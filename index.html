@@ -316,11 +316,12 @@ function openWish(done){
       <div class="two"><label>Abholen am<input type="date" id="wf" min="${T}" value="${esc(WL.from)}"></label><label>Zurück am<input type="date" id="wt" min="${T}" value="${esc(WL.to)}"></label></div>`:`<small>Noch kein Equipment – unter „Equipment“ ein Gerät antippen und „Auf den Wunschzettel“.</small>`}
     ${WL.skeys.length?`<div><b>Studio · ${fmtL(WL.sdate)}</b></div>${WL.skeys.map(k=>`<div class="li"><span>${esc(slotName(k))}</span><button data-rk="${esc(k)}" aria-label="entfernen">×</button></div>`).join("")}`:`<small>Kein Studio gewählt – unter „Studio“ freie Zeiten antippen.</small>`}
     <label>Vor- und Nachname<input id="wn2" autocomplete="name" value="${esc(WL.name)}" placeholder="z. B. Lena Weber"></label>
+    <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden" aria-hidden="true"><label>Website<input id="whp" name="website" tabindex="-1" autocomplete="off"></label></div>
     <label>Wofür? (optional)<textarea id="wno" maxlength="300" placeholder="z. B. Kurzfilm für Projekt XY, Porträts draußen …">${esc(WL.note)}</textarea></label>
     <div class="err" id="werr"></div>
     <button class="go" id="wsend">Wunsch abschicken</button>
     <small>Das ist noch keine Reservierung. Wir sehen deinen Wunsch beim Verleih; abgeholt und unterschrieben wird persönlich in der Verleihzeit (${esc(times.textContent)}). Dein Name wird nur intern beim Verleih gespeichert.</small></div>`;
-  ov.hidden=false;md.querySelector("[data-x]").onclick=closeOv;
+  ov.hidden=false;md.querySelector("[data-x]").onclick=closeOv;const opened=Date.now();
   const keep=()=>{const f=document.getElementById("wf"),t=document.getElementById("wt");if(f)WL.from=f.value;if(t)WL.to=t.value;WL.name=wn2.value;WL.note=wno.value;saveWL()};
   md.querySelectorAll("input,textarea").forEach(x=>x.oninput=keep);
   md.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{keep();toggleItem(b.dataset.rm);if(tab!=="studio")draw();if(!WL.items.length&&!WL.skeys.length)closeOv();else openWish()});
@@ -333,7 +334,7 @@ function openWish(done){
     wsend.disabled=true;wsend.textContent="Wird gesendet …";err("");
     google.script.run.withSuccessHandler(()=>{WL={items:[],sdate:"",skeys:[],from:"",to:"",name:WL.name,note:""};saveWL();if(tab==="studio")drawStudio();else draw();openWish(true)})
       .withFailureHandler(e=>{wsend.disabled=false;wsend.textContent="Wunsch abschicken";err(e.message)})
-      .api("submitWish",[{name:WL.name,items:items.map(d=>d.id),from:WL.from,to:WL.to,sdate:WL.sdate,skeys:WL.skeys,note:WL.note}],"")};
+      .api("submitWish",[{name:WL.name,items:items.map(d=>d.id),from:WL.from,to:WL.to,sdate:WL.sdate,skeys:WL.skeys,note:WL.note,website:whp.value,t:Date.now()-opened}],"")};
 }
 wopen.onclick=()=>openWish();
 function setTab(t){tab=t;try{localStorage.setItem("kdv_tab",t)}catch(e){}
