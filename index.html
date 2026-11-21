@@ -128,6 +128,10 @@ button.dev{width:100%;text-align:left;cursor:pointer}
 .md .li{display:flex;align-items:center;gap:10px;background:var(--s2);padding:10px 12px;font-size:16px}
 .md .li span{flex:1;min-width:0}
 .md .li button{font-size:20px;padding:0 6px;color:#4c4b4e}
+.md .note{background:#efe4fe;padding:14px 16px;font-size:16px;line-height:22px}
+.md .note b{display:block;font-size:18px;line-height:24px;margin-bottom:4px}
+.md .note.big b{font-size:24px;line-height:30px}
+.gear{margin-top:14px;padding:14px 16px;background:#efe4fe;font-size:17px;line-height:24px}
 .md .err{color:#c0392b;font-size:15px;min-height:20px}
 .md .go{background:var(--ink);color:#fff;padding:16px 18px;font-size:18px;font-weight:500;text-align:center;width:100%}
 .md .go2{background:var(--s2);padding:14px 18px;font-size:17px;text-align:center;width:100%}
@@ -213,7 +217,7 @@ function openDev(id){const d=devById(id);if(!d)return;const T=isoD(new Date()),o
   const tips=String(d.tip||"").split(/\n+/).map(x=>x.trim()).filter(Boolean);
   md.innerHTML=`<div class="mt"><h3>${esc(d.n)}</h3><button data-x>Schließen</button></div>
     <div class="pic">${d.img?`<img src="${esc(d.img)}" alt="">`:IC}</div>
-    <div class="mb">${d.det||d.tag?`<div>${[d.det,d.tag].filter(Boolean).map(esc).join(" · ")}</div>`:""}
+    <div class="mb">${d.det?`<div>${esc(d.det)}</div>`:""}
       ${tips.length?`<ul>${tips.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>`:""}
       <div class="occ">${occ}</div>
       <button class="${inL?"go2":"go"}" id="dwl">${inL?"Vom Wunschzettel nehmen":"Auf den Wunschzettel"}</button>
@@ -293,7 +297,7 @@ function drawStudio(){
     S.studios.forEach(st=>{h+=`<div class="sh">${esc(st)}</div>`;S.slots.filter(x=>x.studio===st).forEach(sl=>{h+=`<div class="tl">${esc(shortSlot(sl.slot))} Uhr</div>`+days.map(s=>cellHtml(S,s,sl)).join("")})});
     h+=`</div>`;
   }
-  h+=`<div class="leg"><span><i style="background:#bc92fb"></i>gebucht</span><span><i style="background:#ffe599"></i>Kurs</span><span><i style="background:repeating-linear-gradient(135deg,#efe4fe 0 4px,#fff 4px 8px);box-shadow:inset 0 0 0 1px #ddd"></i>angefragt</span><span><i style="background:#f0f0f0"></i>geschlossen</span><span>Freie Zeit antippen = auf den Wunschzettel</span></div>${S.hint?`<div class="hint">${esc(S.hint)}</div>`:""}`;
+  h+=`<div class="leg"><span><i style="background:#bc92fb"></i>gebucht</span><span><i style="background:#ffe599"></i>Kurs</span><span><i style="background:repeating-linear-gradient(135deg,#efe4fe 0 4px,#fff 4px 8px);box-shadow:inset 0 0 0 1px #ddd"></i>angefragt</span><span><i style="background:#f0f0f0"></i>geschlossen</span><span>Freie Zeit antippen = auf den Wunschzettel</span></div>${S.gear?`<div class="gear">${esc(S.gear)}</div>`:""}${S.hint?`<div class="hint">${esc(S.hint)}</div>`:""}`;
   el.innerHTML=h;
   el.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{selDay=b.dataset.day;const x=el.querySelector(".days").scrollLeft;drawStudio();el.querySelector(".days").scrollLeft=x});
   const wp=document.getElementById("wp");if(wp){wp.onclick=()=>{if(wk>0){wk--;drawStudio()}};wn.onclick=()=>{if(!wn.disabled){wk++;drawStudio()}};wn0.onclick=()=>{wk=0;drawStudio()}}
@@ -308,19 +312,23 @@ function swipe(el,fn){if(!el)return;let x0=null,y0=null;const end=(x,y)=>{if(x0=
 /* ---------- Wunschzettel abschicken ---------- */
 function openWish(done){
   const S=D&&D.studio,T=isoD(new Date());
-  if(done){md.innerHTML=`<div class="mt"><h3>Abgeschickt</h3><button data-x>Schließen</button></div><div class="mb"><div>${esc(D.wishHint||"Dein Wunsch ist angekommen. Komm damit in die Verleihzeit.")}</div><div><b>Verleihzeiten:</b> ${esc(times.textContent)}</div><button class="go" data-x>Alles klar</button></div>`;
+  if(done){md.innerHTML=`<div class="mt"><h3>Anfrage ist angekommen</h3><button data-x>Schließen</button></div><div class="mb">
+      <div class="note big"><b>Bitte komm in der Verleihzeit vorbei.</b>${esc(times.textContent)}</div>
+      <div>${esc(D.wishHint||"Das ist nur eine Anfrage, noch keine Reservierung. Erst in der Verleihzeit wird alles fest.")}</div>
+      <button class="go" data-x>Verstanden</button></div>`;
     ov.hidden=false;md.querySelectorAll("[data-x]").forEach(b=>b.onclick=closeOv);return}
   const items=WL.items.map(devById).filter(Boolean),slotName=k=>{const sl=S&&S.slots.find(x=>x.key===k);return sl?sl.studio+" · "+shortSlot(sl.slot)+" Uhr":k};
   md.innerHTML=`<div class="mt"><h3>Wunschzettel</h3><button data-x>Schließen</button></div><div class="mb">
     ${items.length?`<div><b>Equipment</b></div>${items.map(d=>`<div class="li"><span>${esc(d.n)}</span><button data-rm="${d.id}" aria-label="entfernen">×</button></div>`).join("")}
       <div class="two"><label>Abholen am<input type="date" id="wf" min="${T}" value="${esc(WL.from)}"></label><label>Zurück am<input type="date" id="wt" min="${T}" value="${esc(WL.to)}"></label></div>`:`<small>Noch kein Equipment – unter „Equipment“ ein Gerät antippen und „Auf den Wunschzettel“.</small>`}
-    ${WL.skeys.length?`<div><b>Studio · ${fmtL(WL.sdate)}</b></div>${WL.skeys.map(k=>`<div class="li"><span>${esc(slotName(k))}</span><button data-rk="${esc(k)}" aria-label="entfernen">×</button></div>`).join("")}`:`<small>Kein Studio gewählt – unter „Studio“ freie Zeiten antippen.</small>`}
+    ${WL.skeys.length?`<div><b>Studio · ${fmtL(WL.sdate)}</b></div>${WL.skeys.map(k=>`<div class="li"><span>${esc(slotName(k))}</span><button data-rk="${esc(k)}" aria-label="entfernen">×</button></div>`).join("")}${S&&S.gear?`<small>${esc(S.gear)}</small>`:""}`:`<small>Kein Studio gewählt – unter „Studio“ freie Zeiten antippen.</small>`}
     <label>Vor- und Nachname<input id="wn2" autocomplete="name" value="${esc(WL.name)}" placeholder="z. B. Lena Weber"></label>
     <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden" aria-hidden="true"><label>Website<input id="whp" name="website" tabindex="-1" autocomplete="off"></label></div>
     <label>Wofür? (optional)<textarea id="wno" maxlength="300" placeholder="z. B. Kurzfilm für Projekt XY, Porträts draußen …">${esc(WL.note)}</textarea></label>
+    <div class="note"><b>Wichtig: Das ist nur eine Anfrage, keine Reservierung.</b>Komm damit in der Verleihzeit vorbei (${esc(times.textContent)}). Erst dort schauen wir zusammen, ob alles passt – dann unterschreibst du und es ist fest.</div>
     <div class="err" id="werr"></div>
-    <button class="go" id="wsend">Wunsch abschicken</button>
-    <small>Das ist noch keine Reservierung. Wir sehen deinen Wunsch beim Verleih; abgeholt und unterschrieben wird persönlich in der Verleihzeit (${esc(times.textContent)}). Dein Name wird nur intern beim Verleih gespeichert.</small></div>`;
+    <button class="go" id="wsend">Anfrage abschicken</button>
+    <small>Dein Name wird nur intern beim Verleih gespeichert.</small></div>`;
   ov.hidden=false;md.querySelector("[data-x]").onclick=closeOv;const opened=Date.now();
   const keep=()=>{const f=document.getElementById("wf"),t=document.getElementById("wt");if(f)WL.from=f.value;if(t)WL.to=t.value;WL.name=wn2.value;WL.note=wno.value;saveWL()};
   md.querySelectorAll("input,textarea").forEach(x=>x.oninput=keep);
@@ -333,7 +341,7 @@ function openWish(done){
     if(items.length&&WL.from<T)return err("Die Abholung liegt in der Vergangenheit.");
     wsend.disabled=true;wsend.textContent="Wird gesendet …";err("");
     google.script.run.withSuccessHandler(()=>{WL={items:[],sdate:"",skeys:[],from:"",to:"",name:WL.name,note:""};saveWL();if(tab==="studio")drawStudio();else draw();openWish(true)})
-      .withFailureHandler(e=>{wsend.disabled=false;wsend.textContent="Wunsch abschicken";err(e.message)})
+      .withFailureHandler(e=>{wsend.disabled=false;wsend.textContent="Anfrage abschicken";err(e.message)})
       .api("submitWish",[{name:WL.name,items:items.map(d=>d.id),from:WL.from,to:WL.to,sdate:WL.sdate,skeys:WL.skeys,note:WL.note,website:whp.value,t:Date.now()-opened}],"")};
 }
 wopen.onclick=()=>openWish();
